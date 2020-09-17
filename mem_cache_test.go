@@ -1,4 +1,4 @@
-package aws_plugins
+package gotools
 
 import (
 	"testing"
