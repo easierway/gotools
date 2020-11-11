@@ -29,7 +29,7 @@ func (m *MemCache) startCleanExpiredItem() {
 				}
 			}
 			m.rwLock.Unlock()
-			time.Sleep(100 * time.Millisecond)
+			time.Sleep(300 * time.Second)
 		}
 	}()
 }
