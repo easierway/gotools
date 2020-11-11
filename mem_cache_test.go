@@ -19,7 +19,7 @@ func TestBasicOps(t *testing.T) {
 		t.Error("get the wrong value from cache")
 	}
 	time.Sleep(6 * time.Second)
-	c, isExisting = cache.Get(key)
+	_, isExisting = cache.Get(key)
 	if isExisting {
 		t.Error("failed to set expired policy for cache")
 	}
