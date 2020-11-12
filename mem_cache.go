@@ -48,19 +48,20 @@ func NewMemCache() *MemCache {
 // expiredIntervalSecs is the expired duration (seconds)
 func (m *MemCache) Put(key string, item interface{}, expiredIntervalSecs int64) {
 	m.rwLock.Lock()
+	defer m.rwLock.Unlock()
 	mItem := &memItem{
 		item:                item,
 		expiredIntervalSecs: expiredIntervalSecs,
 		lastUpdatedTime:     time.Now(),
 	}
 	m.cached[key] = mItem
-	m.rwLock.Unlock()
 }
 
 // Get the item from the cache
 // bool return value means: true = existing, false = not existing/expired
 func (m *MemCache) Get(key string) (interface{}, bool) {
 	m.rwLock.RLock()
+	defer m.rwLock.RUnlock()
 	mItem, ok := m.cached[key]
 	if !ok {
 		return nil, false
@@ -72,13 +73,13 @@ func (m *MemCache) Get(key string) (interface{}, bool) {
 		delete(m.cached, key)
 		return nil, false
 	}
-	m.rwLock.RUnlock()
 	return mItem.item, true
 }
 
 func (m *MemCache) Delete(key string) {
 	m.rwLock.Lock()
+	defer m.rwLock.Unlock()
 	m.cached[key] = nil
 	delete(m.cached, key)
-	m.rwLock.Unlock()
+
 }

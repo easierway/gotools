@@ -9,6 +9,7 @@ func TestBasicOps(t *testing.T) {
 	key := "TestKey"
 	value := "Test"
 	cache := NewMemCache()
+	cache.Get(key)
 	cache.Put(key, value, 5)
 	c, isExisting := cache.Get(key)
 	if !isExisting {
